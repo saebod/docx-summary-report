@@ -18,7 +18,7 @@ the file count_CSV.py is used for colecting data from my docx file.  Using a fun
 The stop word is removing elements i don't need to measure. Such as referencelist and Appendix.
 When the data is colleted the script  saves it in a CSV file with the input of date and number of characters
 
-###Example 
+### Example 
 
 ```python
 from packages.cal import avg_page_left, ETL
@@ -26,7 +26,7 @@ from packages.WordCharacter import Character_Count
 import pandas as pd
 import datetime
 
-char =Character_Count('C:/Users/ext-sda/Dropbox/Uni-handelskole/Business Intelligence - Uni/Speciale/Speciale.docx','Stop-python')
+char =Character_Count('C:/Users/ext-sda/Speciale.docx','Stop-python')
 
 today=str(datetime.date.today())
 
