@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta,date
 import pandas as pd
-
+import csv
+import os
 def avg_page_left(Goal_page,offdays_pr_week,char_now,deadline):
 	#Calculate the number of charaters from the goal page
 	Goal_char=Goal_page*2400
@@ -28,3 +29,11 @@ def ETL(df):
 	df['char_today']=df['Count'].subtract(df['Count'].shift()).fillna(0)
 	df['pages_written']=round(df['char_today']/2400,2)
 	return df
+
+def check_csv(csvname):
+	fields = ['Date', 'Count']
+	if not os.path.exists(csvname):
+		with open(csvname, 'a') as csvfile:
+			writer = csv.DictWriter(csvfile, delimiter=',', lineterminator='\n',fieldnames=fields)
+			writer.writeheader()
+			csvfile.close()
