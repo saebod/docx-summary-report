@@ -46,4 +46,4 @@ The file needs three inputs:
  |Goal_page|The goal of how many pages you want to write in total| 
  |offdays_pr_week|how many offdays do you except to have pr week
 
-###End
+### End
