@@ -28,7 +28,10 @@ def ETL(df):
 	df['day_of_week'] = df['Date'].dt.day_name()
 	df['char_today']=df['Count'].subtract(df['Count'].shift()).fillna(0)
 	df['pages_written']=round(df['char_today']/2400,2)
+	df=df.sort_values('Date',ascending=False)
 	return df
+
+
 
 def check_csv(csvname):
 	fields = ['Date', 'Count']
@@ -37,3 +40,16 @@ def check_csv(csvname):
 			writer = csv.DictWriter(csvfile, delimiter=',', lineterminator='\n',fieldnames=fields)
 			writer.writeheader()
 			csvfile.close()
+
+def csv_insert_count(csvfilename,char):
+	'''Inserts todays count in csv file, if the file is not created it will create the file
+		Args: 
+			csvfilename: the csv file name 
+			char: todays number of charaters
+	 '''
+	today = date.today()
+	#If there isn't any csv file with the name it will create it 
+	check_csv(csvfilename)
+	df = pd.read_csv(csvfilename, names=['Date', 'Count'], header=0, index_col='Date',sep=',')
+	df.loc[str(today), 'Count'] =char
+	df.to_csv(csvfilename)

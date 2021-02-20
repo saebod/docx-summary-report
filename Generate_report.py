@@ -2,10 +2,26 @@
 from fpdf import FPDF
 from datetime import datetime, timedelta,date
 import os
-from packages.cal import avg_page_left, ETL
+from packages.cal import avg_page_left, ETL,check_csv, csv_insert_count
 from packages.Graph import *
+from packages.WordCharacter import Character_Count
+######################Needs to be fill out################################
+#Deadline for when you want to be done (YYYY,M,DD)
+deadline = date(2021, 5, 20)
+ #how many pages du you want to write
+Goal_page=50
+ #how many days pr week du you except not to be working on this paper
+offdays_pr_week=2
+#where your word file is and if you have a stopword
+char =Character_Count('C:/Users/ext-sda/Dropbox/Uni-handelskole/Business Intelligence - Uni/Speciale/Speciale.docx','Stop-python')
+#Name of the log csv file in which the log of your charaters is saved.
+# Don't worry if you don't have created such a file. the script will create the file if it cannot find it.
+csvfilename= 'count_logv2.csv'
+##########################################################################
 
-df =pd.read_csv("count_logv2.csv",sep=",")
+csv_insert_count(csvfilename=csvfilename,char=char)
+today = date.today()
+df =pd.read_csv(csvfilename,sep=",")
 df=ETL(df)
 df=df.sort_values('Date',ascending=False)
 #total count
@@ -14,15 +30,6 @@ Total_page = Total_count/2400
 #Count from privous day
 Total_count_P = df.iloc[1]['Count']
 Total_page_P = Total_count_P/2400
-
-######################Needs to be fill out################################
-#Deadline for when you want to be done (YYYY,M,DD)
-deadline = date(2021, 5, 20)
- #how many pages du you want to write
-Goal_page=50
- #how many days pr week du you except not to be working on this paper
-offdays_pr_week=2
-##########################################################################
 avg_page=avg_page_left(Goal_page=Goal_page, offdays_pr_week=offdays_pr_week, char_now=Total_count, deadline=deadline)
 
 
@@ -66,5 +73,4 @@ def create_report(day=datetime.today(), filename="report.pdf"):
 
   pdf.output(filename, 'F')
 if __name__ == '__main__':
-  today = date.today()
   create_report(today)
